@@ -1,0 +1,50 @@
+﻿using System.Net.Mail;
+using System.Net;
+
+namespace JobPortal.Repository
+{
+    public class EmailSender:IEmailSender
+    {
+        private readonly IConfiguration _configuration;
+
+        public EmailSender(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+        public async Task<bool> SendEmail(Dictionary<string, string> MailContent)
+        {
+            var mail = "demoJobPortal@outlook.com";
+            var pwd = _configuration["Credentials:Password"];
+            var client = new SmtpClient("smtp-mail.outlook.com", 587)
+            {
+                EnableSsl = true,
+                Credentials = new NetworkCredential(mail, pwd)
+            };
+
+            try
+            {
+                client.SendMailAsync(new MailMessage(
+                   from: mail, to: MailContent["Email"], MailContent["subject"], MailContent["Message"]));
+                return true;
+            }catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public async Task<Dictionary<string, string>> SendMessage(Dictionary<string, string> MailContent)
+        {
+            Dictionary<string, string> EmailContent = new Dictionary<string, string>();
+            await Task.Run(() =>
+            {
+                string Subject = "Verify Your Email Address for Full Access to Job Portal";
+                string Message = $"Dear {MailContent["Name"]},\r\n\r\nWelcome to JobPortal! We're thrilled to have you on board. To ensure the security of your account, we've generated a temporary password for you to sign in. Here are your temporary login details:\r\n\r\nUsername/Email:{MailContent["Email"]} \r\nTemporary Password: {MailContent[MailContent["Email"]]}" +
+                    "\r\nPlease sign in using the provided credentials to access your account";
+                EmailContent.Add("Subject", Subject);
+                EmailContent.Add("Message", Message);
+                EmailContent.Add("Email", MailContent["Email"]);
+             });
+
+            return EmailContent;
+        }
+        }
+    }
