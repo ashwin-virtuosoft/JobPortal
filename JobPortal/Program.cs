@@ -14,6 +14,7 @@ builder.Services.AddScoped<UserDetailsInsert>();
 builder.Services.AddScoped<UserInsertRepository>();
 builder.Services.AddScoped<GetUserDetails>();
 builder.Services.AddScoped<AdminPageRepository>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

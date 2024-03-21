@@ -13,6 +13,7 @@
         public DateTime UpdatedDate { get; set;}
         public int Status { get; set; }
         public string Remark {  get; set; }
+        public string Password {  get; set; }
         
     }
 }
