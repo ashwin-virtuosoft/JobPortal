@@ -10,19 +10,21 @@ namespace JobPortal.services
     {
    
         private readonly IUserInsertRepository userInsertRepository;
+       
 
         public UserDetailsInsert(UserInsertRepository rpo)
         {
             
             userInsertRepository = rpo;
         }
-
+       
         public async Task<bool> InsertUser(UserDetails userDetails)
         {
            return await userInsertRepository.InsertUser(userDetails);
-
-
         }
+
+
+        
 
        
     }

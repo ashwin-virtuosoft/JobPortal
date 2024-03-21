@@ -9,6 +9,7 @@ namespace JobPortal.Repository
     {
         private readonly IConfiguration _configuration;
 
+
         public UserInsertRepository(IConfiguration configuration)
         {
             _configuration = configuration;

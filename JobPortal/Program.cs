@@ -12,7 +12,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<UserDetailsInsert>();
 builder.Services.AddScoped<UserInsertRepository>();
-
+builder.Services.AddScoped<GetUserDetails>();
+builder.Services.AddScoped<AdminPageRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

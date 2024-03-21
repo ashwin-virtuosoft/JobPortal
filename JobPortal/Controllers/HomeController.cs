@@ -9,14 +9,16 @@ namespace JobPortal.Controllers
     public class HomeController : ControllerBase
     {
 
-    
+  
         private readonly UserDetailsInsert _userDetailsInsertService;
+        private readonly GetUserDetails _getUserDetailsService;
 
 
-        public HomeController( UserDetailsInsert userDetailsInsertService)
+        public HomeController( UserDetailsInsert userDetailsInsertService,GetUserDetails getUserDetailsService)
         {
             
             _userDetailsInsertService = userDetailsInsertService;
+            _getUserDetailsService = getUserDetailsService;
 
         }
         [HttpPost("user")]
@@ -24,8 +26,6 @@ namespace JobPortal.Controllers
         {
             try
             {
-
-
                 bool result = await _userDetailsInsertService.InsertUser(userDetails);
 
                 if (result)
@@ -44,5 +44,21 @@ namespace JobPortal.Controllers
                 return BadRequest($"Error Message:{ ex.Message}");
             }
         }
+
+        [HttpGet("AdminGet")]
+        public async Task<IActionResult> GetUserDetails()
+        {
+            List<UserDetails> userResult = await _getUserDetailsService.GetUser();
+
+            if (userResult != null && userResult.Count > 0)
+            {
+                return Ok(userResult);
+            }
+            else
+            {
+                return BadRequest("No user details found.");
+            }
+        }
+
     }
 }
