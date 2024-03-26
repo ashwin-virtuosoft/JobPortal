@@ -25,10 +25,14 @@ namespace JobPortal.Repository
             {
                 client.SendMailAsync
                     (new MailMessage(
-                   from: mail, to: MailContent["Email"], MailContent["Subject"], MailContent["Message"]));
+                   from: mail,
+                   to: MailContent["Email"], 
+                   subject: MailContent["Subject"],
+                   body:MailContent["Message"])
+                    { IsBodyHtml=true});
                 return true;
             }catch (Exception ex)
-            {
+            {                                       
                 return false;
             }
         }
@@ -38,12 +42,18 @@ namespace JobPortal.Repository
             await Task.Run(() =>
             {
                 string Subject = "Verify Your Email Address for Full Access to Job Portal";
-                string Message = $"Dear {MailContent["Name"]},\r\n\r\nWelcome to JobPortal!  we've generated a temporary password for you to sign in. Here are your temporary login details:\r\n\r\nUsername/Email:\n{MailContent["Email"]} \r\nTemporary Password: \n{MailContent[MailContent["Email"]]}" +
-                    "\r\nPlease sign in using the provided credentials to access your account";
+                string Message = $@"<p><b>Dear {MailContent["Name"]},</b></p>
+                                    <p>Welcome to JobPortal! We've generated a temporary password for you to sign in.</p>
+                                    <p>Here are your temporary login details:</p>
+                                    <ul>
+                                        <li><strong>Username/Email:</strong> {MailContent["Email"]}</li>
+                                        <li><strong>Temporary Password:</strong> {MailContent[MailContent["Email"]]}</li>
+                                    </ul>
+                                    <p>Please sign in using the provided credentials to access your account.</p>";
                 EmailContent.Add("Subject", Subject);
                 EmailContent.Add("Message", Message);
                 EmailContent.Add("Email", MailContent["Email"]);
-             });
+            });
                                                                         
             return EmailContent;
         }
