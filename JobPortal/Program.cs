@@ -15,7 +15,12 @@ builder.Services.AddScoped<UserInsertRepository>();
 builder.Services.AddScoped<GetUserDetails>();
 builder.Services.AddScoped<AdminPageRepository>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddScoped<IDemo,DemoRepo>();
+builder.Services.AddScoped<DemoService>();
+
 var app = builder.Build();
+
+app.UseCors(c => c.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -29,5 +34,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
 
 app.Run();

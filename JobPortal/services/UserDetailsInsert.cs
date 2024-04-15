@@ -23,7 +23,6 @@ namespace JobPortal.services
            return await userInsertRepository.InsertUser(userDetails);
         }
 
-
         
 
        
